@@ -11,13 +11,14 @@ try:
     while True:
         for LED in LEDs:
             if enable:
+                print("On")
                 LED.on()
             else:
+                print("Off")
                 LED.off()
             sleep(1)
 
         enable = not enable
-        print("Looping...")
 
 except KeyboardInterrupt:
     red.close()
