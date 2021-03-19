@@ -1,5 +1,6 @@
-from LEDs.src import *
 import time
+
+from LEDs.src import LEDs
 
 try:
     while True:
