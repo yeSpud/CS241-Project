@@ -1,14 +1,14 @@
 from typing import List
 
-from gpio_led import Led
+from .gpio_led import Led
 
 red: Led = Led(2)
-red.__name__ = "Red"
+red.name = "Red"
 
 green: Led = Led(3)
-green.__name__ = "Green"
+green.name = "Green"
 
 blue: Led = Led(4)
-blue.__name__ = "Blue"
+blue.name = "Blue"
 
 LEDs: List[Led] = [red, green, blue]

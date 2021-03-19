@@ -3,6 +3,8 @@ from gpiozero import PWMOutputDevice
 
 class Led(PWMOutputDevice):
 
+    name: str = ""
+
     def _write(self, value):
         super(Led, self)._write(1 - value)
 

@@ -5,10 +5,10 @@ from LEDs.src import LEDs
 try:
     while True:
         for led in LEDs:
-            print(led.__name__ + ": on")
+            print(led.name + ": on")
             led.on()
             time.sleep(1)
-            print(led.__name__ + ": off")
+            print(led.name + ": off")
             led.off()
             time.sleep(1)
 
