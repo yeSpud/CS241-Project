@@ -4,11 +4,11 @@ from LEDs.src import LEDs
 
 time.sleep(1)
 
-m = 7
+m = 20
 
 try:
     for led in LEDs:
-        for index in range(0, m):
+        for index in range(0, m+1):
             v = index / m
             print(led.name + ": " + str(v))
             led.value = v
