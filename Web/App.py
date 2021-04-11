@@ -1,7 +1,7 @@
 from flask import render_template, Flask, request, jsonify
 from werkzeug import exceptions
 from sys import argv
-from json import load
+from LEDs.src import red, blue, green
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -50,9 +50,9 @@ def fixed():
         try:
             # Parse the json data
             data: dict = request.json
-            print(data)
             rgb: tuple = parse_rgb(data.get("color"))
-            print(rgb)
+            # Set the LEDs
+            set_leds(rgb[0], rgb[1], rgb[2])
             return jsonify({"Response": "Accepted"}), 202
 
         except exceptions.BadRequestKeyError:
@@ -63,6 +63,12 @@ def fixed():
 def parse_rgb(hex_value: str) -> tuple:
     h = hex_value.lstrip('#')
     return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def set_leds(r: int, g: int, b: int):
+    red.value = r/255
+    green.value = g/255
+    blue.value = b/255
 
 
 @app.errorhandler(403)
