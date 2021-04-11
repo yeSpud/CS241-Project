@@ -1,20 +1,29 @@
-{% extends "base.html" %}
-{% block title %}Color picker{% endblock %}
-{% block navlinks %}
-<!-- TODO Navlinks -->
-{% endblock %}
-{% block header %}Standard color picker{% endblock %}
-{% block content %}
-<center>
-    <br>
-    <!-- TODO Content -->
-    <input type="color"/>
-    {% if mjpegIP %}
-    <br>
-    <br>
-    <video width="640" height="480" controls>
-        <source src="{{ mjpegIP }}:4343/video" type="video">
-    </video>
-    {% endif %}
-</center>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Color picker</title>
+    <script language="JavaScript">
+        function submit(value) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "fixed", true);
+            xhr.setRequestHeader("Content-Type", "application/json")
+            param = {"color": value}
+            console.log(param)
+            xhr.send(JSON.stringify(param));
+        }
+    </script>
+</head>
+<body>
+  <center>
+      <br>
+      <h1>Click to choose a color</h1>
+      <input type="color" value="#888888" onchange="submit(this.value)"/>
+      {% if mjpeg|length %}
+      <br>
+      <br>
+      <img src="https://{{ mjpeg }}:4343/video?640x480" width="640" height="480"/>
+      {% endif %}
+  </center>
+</body>
+</html>

@@ -1,5 +1,7 @@
-from flask import render_template, Flask, request
+from flask import render_template, Flask, request, jsonify
+from werkzeug import exceptions
 from sys import argv
+from json import load
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -33,11 +35,34 @@ def startup():
 
 @app.route('/', methods=["GET"])
 def index():
-    print(remoteIP)
     if request.remote_addr == remoteIP:
-        return render_template("oldindex.html", mjpeg=mjpegIP)
+        return render_template("index.html", mjpeg=mjpegIP)
     else:
         return error403(None)
+
+
+@app.route("/fixed", methods=["POST"])
+def fixed():
+    # First check for valid IP
+    if request.remote_addr != remoteIP:
+        return jsonify({"Response": "no"}), 403
+    else:
+        try:
+            # Parse the json data
+            data: dict = request.json
+            print(data)
+            rgb: tuple = parse_rgb(data.get("color"))
+            print(rgb)
+            return jsonify({"Response": "Accepted"}), 202
+
+        except exceptions.BadRequestKeyError:
+            # Catch any bad requests
+            return jsonify({"Response": "Bad parameters"}), 400
+
+
+def parse_rgb(hex_value: str) -> tuple:
+    h = hex_value.lstrip('#')
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
 
 
 @app.errorhandler(403)
