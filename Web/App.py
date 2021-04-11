@@ -1,30 +1,48 @@
-from flask import render_template, Flask
-import sys
+from flask import render_template, Flask, request
+from sys import argv
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
+
+remoteIP: str = ""
+mjpegIP: str = ""
 
 
 def startup():
 
     # Check for valid command line arguments
-    if len(sys.argv) > 4 or len(sys.argv) < 3:
+    if len(argv) > 4 or len(argv) < 3:
         print("Usage: python3 App.py <local IP> <remote IP> [stream IP]")
         return
 
-    # TODO Get current local IP
-    print(f"Local IP: {sys.argv[1]}\nRemote IP: {sys.argv[2]}")
+    # Get current local and IPs
+    localIP = argv[1]
+    global remoteIP
+    remoteIP = argv[2]
+    print(f"Local IP: {localIP}\nRemote IP: {remoteIP}")
 
-    # TODO Try getting MJPEG from optional argument
+    # Try getting MJPEG from optional argument
+    if len(argv) == 4:
+        global mjpegIP
+        mjpegIP = argv[3]
+        print(f"mjpeg stream IP: {mjpegIP}")
 
-    # TODO Start app
-    #app.run(port=80, host=)
-    app.run(port=80)
+    # Start app
+    app.run(port=80, host=localIP)
 
 
 @app.route('/', methods=["GET"])
 def index():
-    return render_template("index.html")
+    print(remoteIP)
+    if request.remote_addr == remoteIP:
+        return render_template("oldindex.html", mjpeg=mjpegIP)
+    else:
+        return error403(None)
+
+
+@app.errorhandler(403)
+def error403(err):
+    return render_template("403.html"), 403
 
 
 @app.errorhandler(404)
@@ -34,3 +52,5 @@ def error404(err):
 
 if __name__ == "__main__":
     startup()
+
+

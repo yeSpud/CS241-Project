@@ -6,9 +6,15 @@
 {% block header %}Standard color picker{% endblock %}
 {% block content %}
 <center>
-    <input type="password"/>
     <br>
     <!-- TODO Content -->
     <input type="color"/>
+    {% if mjpegIP %}
+    <br>
+    <br>
+    <video width="640" height="480" controls>
+        <source src="{{ mjpegIP }}:4343/video" type="video">
+    </video>
+    {% endif %}
 </center>
 {% endblock %}
