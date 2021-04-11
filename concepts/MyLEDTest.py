@@ -1,6 +1,6 @@
 import time
 
-from LEDs.src import LEDs
+from Pyled import LEDs
 
 try:
     while True:

@@ -1,7 +1,7 @@
 from flask import render_template, Flask, request, jsonify
 from werkzeug import exceptions
 from sys import argv
-from LEDs.src import red, blue, green
+from Pyled import red, blue, green
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
